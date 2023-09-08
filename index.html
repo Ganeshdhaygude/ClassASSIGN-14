@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Timer</title>
+    <style>
+        body{
+    background-color: lightgrey;
+    margin: 20px 30px;
+    padding: auto;
+    text-align: center;
+}
+.timer-container {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+
+}
+.buttons {
+    border: 5px solid red;
+    padding: 10px;
+    border-radius: 5%;
+    box-sizing: border-box;
+    
+}
+.timer-button{
+
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid rgb(221, 28, 28);
+
+border-radius: 10%;
+color: white;
+background-color: rgba(197, 53, 216, 0.486);
+}
+.timer-display {
+    margin-bottom: 25px;
+    color: red;
+    font-size: 50px;
+}
+h2{
+    color:purple
+}
+.owner{
+    color:blueviolet;
+}
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <div class="timer">
+            <div id="timer" class="timer-display">00:00:00.00</div>
+            <div class="buttons">
+                <button id="start" class="timer-button">Start</button>
+                <button id="stop" class="timer-button" disabled>Stop</button>
+                <button id="reset" class="timer-button">Reset</button>
+            </div>
+            <h2>Stop Watch   </h2> <span class="owner"> - made by Ganesh Dhaygude</span>
+        </div>
+        </div>
+    <script>
+        const timerEl = document.getElementById("timer");
+const startButtonEl = document.getElementById("start");
+const stopButtonEl = document.getElementById("stop");
+const resetButtonEl = document.getElementById("reset");
+
+let startTime = 0;
+let elapsedTime = 0;
+let timerInterval;
+
+function startTimer() {
+  startTime = Date.now() - elapsedTime;
+
+  timerInterval = setInterval(() => {
+    elapsedTime = Date.now() - startTime;
+    timerEl.textContent = formatTime(elapsedTime);
+  }, 10);
+
+  startButtonEl.disabled = true;
+  stopButtonEl.disabled = false;
+}
+
+function formatTime(elapsedTime) {
+  const milliseconds = Math.floor((elapsedTime % 1000) / 10);
+  const seconds = Math.floor((elapsedTime % (1000 * 60)) / 1000);
+  const minutes = Math.floor((elapsedTime % (1000 * 60 * 60)) / (1000 * 60));
+  const hours = Math.floor(elapsedTime / (1000 * 60 * 60));
+  return (
+    (hours ? (hours > 9 ? hours : "0" + hours) : "00") +
+    ":" +
+    (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") +
+    ":" +
+    (seconds ? (seconds > 9 ? seconds : "0" + seconds) : "00") +
+    "." +
+    (milliseconds > 9 ? milliseconds : "0" + milliseconds)
+  );
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  startButtonEl.disabled = false;
+  stopButtonEl.disabled = true;
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  elapsedTime = 0;
+  timerEl.textContent = "00:00:00";
+  startButtonEl.disabled = false;
+  stopButtonEl.disabled = true;
+}
+
+startButtonEl.addEventListener("click", startTimer);
+stopButtonEl.addEventListener("click", stopTimer);
+resetButtonEl.addEventListener("click", resetTimer);
+    </script>
+</body>
+</html>
